@@ -4,7 +4,7 @@ CREATE TABLE "events" (
     "title" TEXT NOT NULL,
     "details" TEXT,
     "maximum_attendees" INTEGER,
-    "slug" TEXT NOT NULL,
+    "slug" TEXT NOT NULL,++++++
 
     CONSTRAINT "events_pkey" PRIMARY KEY ("id")
 );
