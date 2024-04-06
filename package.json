@@ -6,7 +6,7 @@
   "scripts": {
     "start": "tsx src/server.ts",
     "build": "tsup src",
-    "start:dev": "tsx watch src/server.ts",
+    "start:dev": "tsx watch --env-file .env src/server.ts",
     "husky:prepare": "npx husky init",
     "test": "vitest",
     "test:lint": "vitest run"
