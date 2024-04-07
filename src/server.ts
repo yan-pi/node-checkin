@@ -1,13 +1,9 @@
 import fastify from "fastify"
-import testRoute from "./routes/test-route"
+import createEvent from "./routes/create-event"
 
 const app = fastify()
 
-app.get("/test", async (request, reply) => {
-  return { hello: "world" }
-})
-
-app.register(testRoute)
+app.register(createEvent)
 
 app.listen({ port: 8080 }).then(() => {
   console.log("Server listening on port 8080!")
