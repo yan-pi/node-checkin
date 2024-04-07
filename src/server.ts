@@ -1,17 +1,14 @@
-import fastify from 'fastify';
+import fastify from "fastify"
+import testRoute from "./routes/test-route"
 
-const app = fastify();
+const app = fastify()
 
-const start = async () => {
-  try {
-    await app.listen({
-      port: 8080,
-    });
-    console.log('Server is running on port 8080');
-  } catch (err) {
-    console.error(err);
-    process.exit(1);
-  }
-};
+app.get("/test", async (request, reply) => {
+  return { hello: "world" }
+})
 
-start();
+app.register(testRoute)
+
+app.listen({ port: 8080 }).then(() => {
+  console.log("Server listening on port 8080!")
+})
