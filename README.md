@@ -135,6 +135,10 @@ Applies the Prisma migrations.
 - **typescript**: TypeScript compiler
 - **vitest**: Testing framework
 
+## Acknowledgment
+
+This project was built during a workshop from Rockeseat NLW Unite. We would like to express our gratitude for the valuable learning experience and guidance provided.
+
 ## License
 
 MIT
