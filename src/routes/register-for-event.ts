@@ -1,6 +1,6 @@
-import z from "zod"
 import { FastifyInstance } from "fastify"
 import { ZodTypeProvider } from "fastify-type-provider-zod"
+import { z } from "zod"
 import { prisma } from "../lib/prisma"
 
 export async function registerForEvent(app: FastifyInstance) {
@@ -8,6 +8,8 @@ export async function registerForEvent(app: FastifyInstance) {
     "/events/:eventId/attendees",
     {
       schema: {
+        summary: "Register an attendee",
+        tags: ["attendees"],
         body: z.object({
           name: z.string().min(4),
           email: z.string().email(),
@@ -15,9 +17,9 @@ export async function registerForEvent(app: FastifyInstance) {
         params: z.object({
           eventId: z.string().uuid(),
         }),
-        reponse: {
+        response: {
           201: z.object({
-            attendeeId: z.string().uuid(),
+            attendeeId: z.number(),
           }),
         },
       },
@@ -26,17 +28,20 @@ export async function registerForEvent(app: FastifyInstance) {
       const { eventId } = request.params
       const { name, email } = request.body
 
-      const attendeeForEmail = await prisma.attendee.findFirst({
+      const attendeeFromEmail = await prisma.attendee.findUnique({
         where: {
-          AND: [{ email }, { eventId }],
+          eventId_email: {
+            email,
+            eventId,
+          },
         },
       })
-      if (attendeeForEmail !== null) {
-        throw new Error(
-          "Attendee with this email already exists for this event",
-        )
+
+      if (attendeeFromEmail !== null) {
+        throw new Error("This e-mail is already registered for this event.")
       }
-      const [event, amoutOfAttendees] = await Promise.all([
+
+      const [event, amountOfAttendeesForEvent] = await Promise.all([
         prisma.event.findUnique({
           where: {
             id: eventId,
@@ -52,7 +57,7 @@ export async function registerForEvent(app: FastifyInstance) {
 
       if (
         event?.maximumAttendees &&
-        amoutOfAttendees >= event.maximumAttendees
+        amountOfAttendeesForEvent >= event.maximumAttendees
       ) {
         throw new Error(
           "The maximum number of attendees for this event has been reached.",
