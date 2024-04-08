@@ -29,7 +29,7 @@ app.register(fastifySwagger, {
     consumes: ["application/json"],
     produces: ["application/json"],
     info: {
-      title: "pass.in",
+      title: "node check in API",
       description:
         "Especificações da API para o back-end da aplicação pass.in construída durante o NLW Unite da Rocketseat.",
       version: "1.0.0",
